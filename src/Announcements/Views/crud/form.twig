@@ -1,0 +1,19 @@
+{{ csrf_input () }}
+<div class="row">
+    <div class="col-sm-12 col-lg-6 col-md-6">
+        {{ field('title', item.title, trans("name")) }}
+    </div>
+
+    <div class="col-sm-12 col-lg-6 col-md-6">
+        {{ field('thumbnail', null, trans("thumbnail"), {type: 'file'}) }}
+    </div>
+
+    <div class="col-sm-12 col-lg-12 col-md-12">
+        {{ field('content', item.content, trans("message"), {type: "textarea",style: "height:200px", is: "textarea-autogrow"}) }}
+    </div>
+
+    <div class="col-sm-12 col-lg-12 col-md-12">
+        {{ custom_checkbox("pinned", item.pinned, trans("pinned")) }}
+        {{ custom_checkbox("published", item.published, trans("announcementsadmin.published")) }}
+    </div>
+</div>

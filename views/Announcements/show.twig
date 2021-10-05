@@ -1,0 +1,44 @@
+{% extends "layout.twig" %}
+
+{% block title announcement.title%}
+
+{% block body %}
+
+    <section class="forms">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col">
+                    <article class="article article-style-b">
+                        <div class="article-badge">
+
+                            <div class="article-header" style="height: 350px;">
+
+                                <div class="article-image"
+                                     data-background="{{ announcement.thumbnailUrl }}">
+                                    {% if announcement.pinned %}
+
+                                        <div class="badge bg-warning m-2 text-white"><i
+                                                    class="fas fa-thumbtack"></i>
+                                            {{ trans("pinned") }}
+                                        </div>
+                                    {% endif %}
+
+                                </div>
+                            </div>
+                            <div class="article-details">
+                                <div class="article-title">
+                                    <h2><a href="#">{{ announcement.title }}</a></h2>
+                                </div>
+                                <p>{{ announcement.content | raw }}</p>
+                            </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    {{ ago_scripts() }}
+
+{% endblock %}

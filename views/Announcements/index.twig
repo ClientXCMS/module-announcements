@@ -1,0 +1,71 @@
+{% extends "layout.twig" %}
+
+{% block title trans("announcements")%}
+
+{% block body %}
+
+    <section class="forms">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3 col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4>{{ trans("announcementsadmin.bymonth") }}</h4>
+                            <ul class="list-group">
+                                <a class="list-group-item "
+                                   href="{{ path('announcements') }}">{{ trans("announcementsadmin.all") }}</a>
+                                {% for month in months %}
+
+                                    {% set currentDate = [month.format('Y'),month.format('m')] | join('-') %}
+                                    <a class="list-group-item {{ currentDate == current ? 'active' }}"
+                                       href="{{ path('announcements.view', {year: month.format('Y'), month: month.format('m')}) }}">{{ month.format('M Y') }}</a>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 col-sm-12">
+                    <div class="row">
+                    {% for announcement in announcements %}
+
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                            <article class="article article-style-b">
+                                <div class="article-badge">
+
+                                    <div class="article-header">
+
+                                        <div class="article-image"
+                                             data-background="{{ announcement.thumbnailUrl }}">
+                                            {% if announcement.pinned %}
+
+                                            <div class="badge bg-warning m-2 text-white"><i
+                                                        class="fas fa-thumbtack"></i>
+                                                {{ trans("pinned") }}
+                                            </div>
+                                            {% endif %}
+
+                                        </div>
+                                    </div>
+                                    <div class="article-details">
+                                        <div class="article-title">
+                                            <h2><a href="{{  path('announcements.show', {id: announcement.id}) }}">{{ announcement.title }}</a></h2>
+                                        </div>
+                                        <p>{{ announcement.excerpt | raw }}</p>
+                                        <div class="article-cta">
+                                            <a href="{{  path('announcements.show', {id: announcement.id}) }}">{{ trans("see_more") }} <i class="fas fa-chevron-right"></i></a>
+                                        </div>
+                                    </div>
+                            </article>
+                        </div>
+                    {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block scripts %}
+    {{ ago_scripts() }}
+
+{% endblock %}
