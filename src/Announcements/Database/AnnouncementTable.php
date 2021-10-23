@@ -16,8 +16,7 @@ class AnnouncementTable extends Table
     {
         return $this->makeQuery()
             ->where("published = 1")
-            ->order("pinned DESC")
-            ->where("created_at <= NOW()");
+            ->order("pinned DESC");
     }
 
     public function find(int $id)
@@ -38,6 +37,7 @@ class AnnouncementTable extends Table
         $announcements = $this->findPublic();
         return [$announcements->fetchAll(), $this->format($length)];
     }
+
 
     public function findForDate(int $year, int $month, $length = 9)
     {
@@ -69,6 +69,16 @@ class AnnouncementTable extends Table
         $params['pinned'] = (int)array_key_exists('pinned', $params);
 
         return parent::insert($params);
+    }
+
+    public function update($condition, $params, $where = 'id'): bool
+    {
+        if (array_key_exists('title', $params)) {
+
+            $params['published'] = (int)array_key_exists('published', $params);
+            $params['pinned'] = (int)array_key_exists('pinned', $params);
+        }
+        return parent::update($condition, $params, $where);
     }
 
     public function fetchPinned()

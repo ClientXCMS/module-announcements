@@ -94,8 +94,11 @@ class Announcement
         }
     }
 
-    public function getThumbnailUrl():string
+    public function getThumbnailUrl(): string
     {
-        return "/uploads/announcements/". $this->thumbnail;
+        if ($this->thumbnail === 'default.png') {
+            return 'https://clientxcms.com/Themes/CLIENTXCMS/images/hosting/bg.png';
+        }
+        return "/uploads/announcements/" . $this->thumbnail;
     }
 }

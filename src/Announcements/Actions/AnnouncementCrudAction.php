@@ -35,22 +35,35 @@ class AnnouncementCrudAction extends CrudAction
         string $driver
     )
     {
-        $this->upload = new Upload('public/uploads/announcements', $driver, ['thumbnail' => [260, 170]]);
+        $this->upload = new Upload('public/uploads/announcements', $driver, ['thumbnail' => [600, 300], 'large' => [1000, 500]]);
         parent::__construct($renderer, $table, $router, $flash);
+        $this->table = $table;
     }
 
     public function getValidator(Request $request): Validator
     {
-        return parent::getValidator($request)->notEmpty('title', "content")->extension("thumbnail", ['png']);
+        return parent::getValidator($request)
+            ->notEmpty('title', "content")
+            ->extension("thumbnail", ['png', 'gif', 'jpeg', 'jpg']);
     }
 
     public function afterUpdate(Request $request, $item, ?int $id = null)
     {
-        $thumbnail = $request->getUploadedFiles()['thumbnail'] ?? null;
-        if ($thumbnail) {
-            $item->setThumbnail($this->upload->upload($thumbnail, "news$id.png", "news$id.png"));
+
+        try {
+
+            /** @var \GuzzleHttp\Psr7\UploadedFile $thumbnail */
+            $thumbnail = $request->getUploadedFiles()['thumbnail'];
+            $extension = pathinfo($thumbnail->getClientFilename())['extension'] ?? null;
+            if (!empty($thumbnail->getClientMediaType())) {
+                $item->setThumbnail($this->upload->upload($thumbnail, "news$id." . $extension, "news$id." . $extension));
+                $this->table->update($id, ['thumbnail' => "news$id" . "_thumbnail." . $extension]);
+
+            }
+        } catch (\Exception $e) {
+            $this->error($e->getMessage());
         }
-        $this->table->update($id, ['thumbnail' => $item->getThumbnail()]);
+
 
     }
 

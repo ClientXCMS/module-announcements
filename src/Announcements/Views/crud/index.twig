@@ -45,10 +45,10 @@
                                 <td>#{{ item.id }}</td>
                                 <td>{{ item.title }}</td>
                                 <td class="bullet">
-                                    <div class="bullet bullet-{{ item.pinned ? 'yees' : 'no' }}"></div>
+                                    <div class="bullet bullet-{{ item.pinned ? 'yes' : 'no' }}"></div>
                                 </td>
                                 <td class="bullet">
-                                    <div class="bullet bullet-{{ item.published ? 'yees' : 'no' }}"></div>
+                                    <div class="bullet bullet-{{ item.published ? 'yes' : 'no' }}"></div>
                                 </td>
                                 <td>
                                     <a href="{{ path(routePrefix ~'.edit', {id: item.id}) }}" class="btn btn-primary"
