@@ -64,7 +64,7 @@ class Announcement
 
     public function setTitle(string $title)
     {
-        $this->title = $title;
+        $this->title = d($title);
     }
 
     public function getPinned(): bool
