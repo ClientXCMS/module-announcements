@@ -42,8 +42,9 @@ class AnnouncementTable extends Table
     public function findForDate(int $year, int $month, $length = 9)
     {
         $announcements = $this->findPublic()
-            ->where("date_format(created_at,'%Y-%m') = :date")
-            ->params(['date' => join("-", [$year, $month])]);
+            ->where("YEAR(created_at) = :year")
+            ->where("MONTH(created_at) = :month")
+            ->params(['month' => $month, 'year' => $year]);
         return [$announcements->fetchAll(), $this->format($length)];
     }
 
