@@ -11,11 +11,12 @@ class AnnouncementTable extends Table
 
     protected $table = "announcements";
     protected $entity = Announcement::class;
-
+    protected $order = "id DESC";
     public function findPublic()
     {
         return $this->makeQuery()
             ->where("published = 1")
+            ->order("id DESC")
             ->order("pinned DESC");
     }
 
