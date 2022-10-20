@@ -11,11 +11,12 @@ class AnnouncementTable extends Table
 
     protected $table = "announcements";
     protected $entity = Announcement::class;
-
+    protected $order = "id DESC";
     public function findPublic()
     {
         return $this->makeQuery()
             ->where("published = 1")
+            ->order("id DESC")
             ->order("pinned DESC");
     }
 
@@ -42,8 +43,9 @@ class AnnouncementTable extends Table
     public function findForDate(int $year, int $month, $length = 9)
     {
         $announcements = $this->findPublic()
-            ->where("date_format(created_at,'%Y-%m') = :date")
-            ->params(['date' => join("-", [$year, $month])]);
+            ->where("YEAR(created_at) = :year")
+            ->where("MONTH(created_at) = :month")
+            ->params(['month' => $month, 'year' => $year]);
         return [$announcements->fetchAll(), $this->format($length)];
     }
 
